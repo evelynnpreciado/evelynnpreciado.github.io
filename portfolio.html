@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ev Lopez - Documentary Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Work+Sans:wght@300;400;500&display=swap');
+        
+        :root {
+            --ink: #1a1a1a;
+            --paper: #f8f6f1;
+            --accent: #8b4513;
+            --muted: #6b6b6b;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Password Screen */
+        #password-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #2c1810 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        
+        #password-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        .password-container {
+            text-align: center;
+            color: var(--paper);
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .password-container h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+        }
+        
+        .password-container p {
+            font-size: 1rem;
+            color: rgba(248, 246, 241, 0.7);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+        
+        .password-input-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #password-input {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border: 1px solid rgba(248, 246, 241, 0.3);
+            background: rgba(248, 246, 241, 0.1);
+            color: var(--paper);
+            border-radius: 2px;
+            width: 300px;
+            font-family: 'Work Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        #password-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(248, 246, 241, 0.15);
+        }
+        
+        #password-input::placeholder {
+            color: rgba(248, 246, 241, 0.4);
+        }
+        
+        #password-submit {
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            background: var(--accent);
+            color: var(--paper);
+            border: none;
+            cursor: pointer;
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 500;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        #password-submit:hover {
+            background: #a0522d;
+            transform: translateY(-1px);
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .error-message.show {
+            opacity: 1;
+        }
+        
+        /* Main Content */
+        #main-content {
+            opacity: 0;
+            transition: opacity 0.8s ease 0.3s;
+        }
+        
+        #main-content.visible {
+            opacity: 1;
+        }
+        
+        header {
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+            background: linear-gradient(to bottom, var(--paper) 0%, rgba(248, 246, 241, 0.5) 100%);
+        }
+        
+        header h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            animation: slideDown 0.8s ease;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            color: var(--muted);
+            font-weight: 300;
+            animation: slideDown 0.8s ease 0.1s backwards;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .intro {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            text-align: center;
+            animation: fadeIn 0.8s ease 0.3s backwards;
+        }
+        
+        .intro p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--muted);
+        }
+        
+        .video-grid {
+            display: grid;
+            gap: 4rem;
+            animation: fadeIn 0.8s ease 0.5s backwards;
+        }
+        
+        .video-item {
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .video-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .video-wrapper iframe,
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2c1810 0%, #1a1a1a 100%);
+            color: var(--paper);
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+        }
+        
+        .video-info {
+            padding: 2rem;
+        }
+        
+        .video-info h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--ink);
+        }
+        
+        .video-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+            font-weight: 300;
+        }
+        
+        .video-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .video-description {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(26, 26, 26, 0.1);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .password-container h1 {
+                font-size: 2rem;
+            }
+            
+            .password-input-group {
+                flex-direction: column;
+                width: 100%;
+                padding: 0 1rem;
+            }
+            
+            #password-input {
+                width: 100%;
+            }
+            
+            .video-info h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Protection Screen -->
+    <div id="password-screen">
+        <div class="password-container">
+            <h1>Documentary Portfolio</h1>
+            <p>Please enter password to view</p>
+            <div class="password-input-group">
+                <input 
+                    type="password" 
+                    id="password-input" 
+                    placeholder="Enter password"
+                    autocomplete="off"
+                />
+                <button id="password-submit">Enter</button>
+            </div>
+            <p class="error-message" id="error-message">Incorrect password. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- Main Portfolio Content -->
+    <div id="main-content">
+        <header>
+            <h1>Ev Lopez</h1>
+            <p>Documentary & Educational Video Producer</p>
+        </header>
+
+        <div class="container">
+            <div class="intro">
+                <p>A collection of documentary and educational projects spanning cultural heritage, environmental conservation, and human stories across the United States.</p>
+            </div>
+
+            <div class="video-grid">
+                <!-- Example Video Item 1 -->
+                <div class="video-item">
+                    <div class="video-wrapper">
+                        <!-- Replace with your actual embed code -->
+                        <div class="video-placeholder">Mount Rushmore Project</div>
+                        <!-- Example Vimeo embed (replace with yours):
+                        <iframe src="https://player.vimeo.com/video/YOUR_VIDEO_ID?h=YOUR_HASH" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                        -->
+                    </div>
+                    <div class="video-info">
+                        <h3>Mount Rushmore: Stories in Stone</h3>
+                        <div class="video-meta">
+                            <span>📍 South Dakota</span>
+                            <span>🎬 2024</span>
+                            <span>⏱️ 15 min</span>
+                        </div>
+                        <p class="video-description">
+                            Educational documentary exploring the history and cultural significance of Mount Rushmore National Memorial, featuring interviews with park rangers and historians.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Example Video Item 2 -->
+                <div class="video-item">
+                    <div class="video-wrapper">
+                        <div class="video-placeholder">Honor Flight Documentary</div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Honor Flight: A Journey Home</h3>
+                        <div class="video-meta">
+                            <span>📍 Washington D.C.</span>
+                            <span>🎬 2024</span>
+                            <span>⏱️ 22 min</span>
+                        </div>
+                        <p class="video-description">
+                            Following veterans on their Honor Flight mission to visit war memorials, capturing emotional reunions and reflections on service and sacrifice.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Example Video Item 3 -->
+                <div class="video-item">
+                    <div class="video-wrapper">
+                        <div class="video-placeholder">Buffalo Restoration Project</div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Return of the Buffalo</h3>
+                        <div class="video-meta">
+                            <span>📍 Tribal Lands</span>
+                            <span>🎬 2024</span>
+                            <span>⏱️ 18 min</span>
+                        </div>
+                        <p class="video-description">
+                            Documenting the restoration of buffalo to tribal lands through the InterTribal Buffalo Council, exploring cultural significance and environmental impact.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Example Video Item 4 -->
+                <div class="video-item">
+                    <div class="video-wrapper">
+                        <div class="video-placeholder">Agriculture Documentary</div>
+                    </div>
+                    <div class="video-info">
+                        <h3>American Harvest</h3>
+                        <div class="video-meta">
+                            <span>📍 Midwest USA</span>
+                            <span>🎬 2024</span>
+                            <span>⏱️ 25 min</span>
+                        </div>
+                        <p class="video-description">
+                            Exploring modern American agriculture through the eyes of family farmers, examining sustainability, tradition, and the future of food production.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Add more video items as needed -->
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Ev Lopez. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Password protection
+        const PASSWORD = 'documentary2025'; // CHANGE THIS to your desired password
+        
+        const passwordScreen = document.getElementById('password-screen');
+        const mainContent = document.getElementById('main-content');
+        const passwordInput = document.getElementById('password-input');
+        const passwordSubmit = document.getElementById('password-submit');
+        const errorMessage = document.getElementById('error-message');
+        
+        function checkPassword() {
+            const enteredPassword = passwordInput.value;
+            
+            if (enteredPassword === PASSWORD) {
+                // Correct password
+                passwordScreen.classList.add('hidden');
+                setTimeout(() => {
+                    mainContent.classList.add('visible');
+                }, 300);
+                // Store in session so they don't need to re-enter on page refresh
+                sessionStorage.setItem('authenticated', 'true');
+            } else {
+                // Wrong password
+                errorMessage.classList.add('show');
+                passwordInput.value = '';
+                passwordInput.focus();
+                
+                // Shake animation
+                passwordInput.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    passwordInput.style.animation = '';
+                }, 500);
+            }
+        }
+        
+        // Check if already authenticated in this session
+        if (sessionStorage.getItem('authenticated') === 'true') {
+            passwordScreen.classList.add('hidden');
+            mainContent.classList.add('visible');
+        }
+        
+        passwordSubmit.addEventListener('click', checkPassword);
+        
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        // Focus password input on load
+        passwordInput.focus();
+    </script>
+</body>
+</html>
