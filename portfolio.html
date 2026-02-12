@@ -319,6 +319,52 @@
                 font-size: 1.5rem;
             }
         }
+        .contact-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.5rem;
+            background: white;
+            color: var(--ink);
+            text-decoration: none;
+            border-radius: 4px;
+            border: 1px solid rgba(26, 26, 26, 0.15);
+            font-size: 0.95rem;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+        
+        .contact-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-color: var(--accent);
+        }
+        
+        .contact-link .icon {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        @media (max-width: 768px) {
+            .contact-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .contact-link {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -345,15 +391,23 @@
         <header>
             <h1>Evelynn Preciado</h1>
             <p>Video Producer</p>
-            <span>evelynnpreciado@gmail.com</span>
-            <span>209-271-1301</span>
              </div>
-
+<div class="contact-links">
+                <a href="https://www.linkedin.com/in/evelynn-preciado/" target="_blank" rel="noopener noreferrer" class="contact-link">
+                    <span class="icon">in</span> LinkedIn
+                </a>
+                <a href="mailto:evelynnpreciado@gmail.com" class="contact-link">
+                    <span class="icon">✉</span> Email
+                </a>
+                <a href="tel:+12092711301" class="contact-link">
+                    <span class="icon">☎</span> Call
+                </a>
+            </div>
         </header>
 
         <div class="container">
             <div class="intro">
-                <p>A collection of projects spanning cultural heritage, environmental conservation, and human stories across the United States.</p>
+        <p>Evelynn is a bilingual documentary producer with over a decade of experience bringing untold stories to the screen. Her work spans indigenous narratives from the Black Hills to the battlefields of American history, capturing perspectives that challenge dominant narratives and honor diverse voices. Recent projects have taken her across four continents and 13 countries, creating educational content that bridges cultures and preserves memory—from the hallowed grounds of ABMC memorial sites to the sacred landscapes of tribal nations.</p>
             </div>
 
             <div class="video-grid">
